@@ -3,17 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start":"node serve",
+    "start": "node serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "nodemon": "nodemon server/index.js"
+    "nodemon": "nodemon -r dotenv/config server/index.js"
   },
   "dependencies": {
     "@vue/composition-api": "^1.0.0-rc.11",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "knex": "^0.95.6",
     "nodemon": "^2.0.7",
