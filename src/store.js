@@ -12,7 +12,7 @@ export default new Vuex.Store({
   mutations: {
     setCurrentView(state){
         state.currentView = !state.currentView
-        state.buttonText = "game"
+        state.buttonText = state.currentView ? "Log" : "Game"
     }
   },
   actions: {

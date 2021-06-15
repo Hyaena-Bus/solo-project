@@ -3,8 +3,8 @@
     <button @click="$store.commit('setCurrentView')">{{this.$store.state.buttonText}}</button>
     <div v-if="this.$store.state.currentView">
       
-      <div>{{state.text}}</div>
-      <div>{{`${state.playerId}の番です`}}</div>
+      <h1>{{state.text}}</h1>
+      
         <table id="table">
           <tr>
               <td @click="clicked(0,0)">{{state.states[0][0]}}</td>
@@ -46,9 +46,9 @@ export default defineComponent({
         ["","",""],
       ],
       playerId: true,
-      text: "",
+      text: "player1のターンです",
       transition: [],
-      dbTransition: [],
+      
       
     });
 
@@ -66,12 +66,12 @@ export default defineComponent({
         state.transition.push({state:newArr,player:state.playerId})
         
         state.playerId = !state.playerId
+        state.text = state.playerId ? "player1のターンです" : "player2のターンです" 
         
         if(winChecker()) {
-          state.text=`${!state.playerId}の勝ち！`
+          state.text = !state.playerId ? "player1の勝ち！" : "player2の勝ち！" 
           postData(state.transition)
-          getData()
-          console.log(state.dbTransition)
+          
           
         }else if(state.transition.length===9){
           state.text="引き分け！"
@@ -101,11 +101,6 @@ export default defineComponent({
               || (state.states[0][2] !== "" && state.states[0][2]===state.states[1][1] && state.states[1][1]===state.states[2][0])
     }
 
-    const getData = async()=>{
-      await axios.get('http://localhost:9000/match').then(d=>{
-        state.dbTransition = d.data
-      })
-    }
 
     const postData = async(data)=>{
       await axios.post('http://localhost:9000/match', {
@@ -126,6 +121,7 @@ export default defineComponent({
       ]
       state.playerId=true
       state.transition = []
+      state.text = "player1のターンです"
     }
 
     return {

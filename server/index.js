@@ -24,7 +24,7 @@ app.get("/match", async (request, response) => {
  app.post("/match", async (request, response) => {
     
     const getData = await database.select().table('match')
-    const newId = getData[getData.length-1].id + 1
+    const newId = getData.length===0 ? 0 : getData[getData.length-1].id + 1
 
     await database.table('match').insert({
         "id": newId,
@@ -34,6 +34,17 @@ app.get("/match", async (request, response) => {
 
     response.status(201).send()
  })
+
+ app.delete("/match", async (request, response) => {
+    await database.table('match').del()
+    response.status(201).send()
+  })
+
+ app.delete("/match/:id", async (request, response) => {
+    const id = request.params.id
+    await database.table('match').where('id',id).del()
+    response.status(201).send()
+  })
 
 
 app.listen(9000, () => console.log(`App listening on port 9000!`));

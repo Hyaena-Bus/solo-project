@@ -1,6 +1,6 @@
 <template>
   <div>
-    log
+    <h1>Log</h1>
     <table id="table">
           <tr>
               <td >{{state.states[0][0]}}</td>
@@ -18,7 +18,9 @@
               <td >{{state.states[2][2]}}</td>
           </tr>
     </table>
-    <button @click="init(18)">init</button>
+    <input v-model="state.text"/><div></div>
+    <button @click="init(state.text)">init</button>
+    <button @click="init(state.latest)">latest</button>
     <button @click="next">next</button>
     <button @click="prev">perv</button>
   </div>
@@ -39,17 +41,18 @@ export default defineComponent({
       dbTransition:[],
       currentTransition:[],
       counter:0,
-
+      text:0,
+      latest:0,
     });
 
     const getData = async()=>{
       await axios.get('http://localhost:9000/match').then(d=>{
         state.dbTransition = d.data
+        state.latest=state.dbTransition.length-1
       })
     }
     
     const init = (num) => {
-        console.log("init")
         state.counter=0
         state.currentTransition = state.dbTransition[num].transition
         state.states = [
@@ -60,7 +63,6 @@ export default defineComponent({
     }
 
     const next = () =>{
-        console.log("next")
         if(state.counter<JSON.parse(state.currentTransition).length){
             state.states = JSON.parse(state.currentTransition)[state.counter].state
             state.counter++
@@ -68,7 +70,6 @@ export default defineComponent({
     }
 
     const prev = () =>{
-        console.log("prev")
         if(state.counter-2>-1){
             state.states = JSON.parse(state.currentTransition)[state.counter-2].state
             state.counter--
