@@ -6,10 +6,14 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    
+    currentView:true,
+    buttonText:"Log",
   },
   mutations: {
-    
+    setCurrentView(state){
+        state.currentView = !state.currentView
+        state.buttonText = "game"
+    }
   },
   actions: {
     
