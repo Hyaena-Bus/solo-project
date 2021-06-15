@@ -103,7 +103,7 @@ export default defineComponent({
 
 
     const postData = async(data)=>{
-      await axios.post('http://localhost:9000/match', {
+      await axios.post('/match/', {
         method: 'POST', 
         mode: 'cors', 
         headers: {

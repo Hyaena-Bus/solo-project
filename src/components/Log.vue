@@ -46,7 +46,7 @@ export default defineComponent({
     });
 
     const getData = async()=>{
-      await axios.get('http://localhost:9000/match').then(d=>{
+      await axios.get('/match/').then(d=>{
         state.dbTransition = d.data
         state.latest=state.dbTransition.length-1
       })
