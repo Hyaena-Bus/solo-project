@@ -1,10 +1,13 @@
 const express = require("express")
 const database = require("../db/knex")
 const cors = require("cors")
+const path = require("path");
 
 const app = express()
 app.use(express.json());
 app.use(cors())
+
+app.use(express.static(path.resolve(__dirname, "..", "dist")));
 
 app.get("/", (request, response) => {
    response.sendStatus(200)
@@ -45,6 +48,12 @@ app.get("/match", async (request, response) => {
     await database.table('match').where('id',id).del()
     response.status(201).send()
   })
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "..", "dist", "index.html"));
+  });
+
+
 
   module.exports = app;
 // app.listen(9000, () => console.log(`App listening on port 9000!`));
