@@ -27,7 +27,7 @@ app.get("/match", async (request, response) => {
  app.post("/match", async (request, response) => {
     
     const getData = await database.select().table('match')
-    const newId = getData.length===0 ? 0 : getData[getData.length-1].id + 1
+    const newId = getData.length===0 ? 0 : Math.max( getData[getData.length-1].id + 1 , getData.length)
     const date = new Date()
     await database.table('match').insert({
         "id": newId,

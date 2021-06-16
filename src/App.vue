@@ -23,6 +23,7 @@
           </tr>
         </table>
         <button id="newGame" @click="newGame" >newGame</button>
+        <button @click="setCpu" >{{state.cpuText}}</button>
     </div>
     <div v-else>
     <Log />
@@ -35,7 +36,8 @@
 import { defineComponent, reactive } from '@vue/composition-api'
 import axios from "axios";
 import Log from "./components/Log.vue"
-// import calc from "./αβ.js"
+import calcMove from "./αβ.js"
+
 
 export default defineComponent({
   components:{Log},
@@ -49,12 +51,11 @@ export default defineComponent({
       playerId: true,
       text: "player1のターンです",
       transition: [],
-      
-      
+      cpu:false,
+      cpuText:"cpu on",
     });
 
     const clicked = (row,column)=>{
-      // console.log(calc(state.transition))
       if(winChecker()) return
       if(state.states[row][column]){
         state.text = "そこには置けないよ"
@@ -67,18 +68,32 @@ export default defineComponent({
         newArr[2]=Array.from(state.states[2])
         state.transition.push({state:newArr,player:state.playerId})
         
+      
         state.playerId = !state.playerId
         state.text = state.playerId ? "player1のターンです" : "player2のターンです" 
         
         if(winChecker()) {
           state.text = !state.playerId ? "player1の勝ち！" : "player2の勝ち！" 
           postData(state.transition)
-          
-          
         }else if(state.transition.length===9){
           state.text="引き分け！"
           postData(state.transition)
+        }else{
+          if(!state.playerId && state.cpu){
+            const moveArr = calcMove(newArr)
+            clicked(moveArr[0],moveArr[1])
+          }
         }
+
+      }
+    }
+
+    const setCpu = () => {
+      state.cpu = !state.cpu
+      if(state.cpu){
+        state.cpuText="cpu off"
+      }else{
+        state.cpuText="cpu on"
       }
     }
 
@@ -130,6 +145,7 @@ export default defineComponent({
       state,
       clicked,
       newGame,
+      setCpu,
     };
   },
 });
