@@ -18,11 +18,22 @@
               <td >{{state.states[2][2]}}</td>
           </tr>
     </table>
-    <input v-model="state.text"/><div></div>
-    <button @click="init(state.text)">init</button>
-    <button @click="init(state.latest)">latest</button>
-    <button @click="next">next</button>
+    
+    <button @click="deleteAll">delete all</button>
+    <button @click="latest">latest</button>
     <button @click="prev">perv</button>
+    <button @click="next">next</button>
+
+
+
+    <div>
+      <li id="list" v-for="n in state.dbTransition">
+       
+        id:{{n.id}}  date:{{n.date.slice(0,10)}} <button @click="init(n.id)">load</button>  <button @click="deleteOne(n.id)">delete</button>
+        
+      </li>
+      
+    </div>
   </div>
 </template>
 
@@ -42,7 +53,7 @@ export default defineComponent({
       currentTransition:[],
       counter:0,
       text:0,
-      latest:0,
+      
     });
 
     const getData = async()=>{
@@ -52,9 +63,22 @@ export default defineComponent({
       })
     }
     
+    const latest = ()=>{
+      state.currentTransition = state.dbTransition[state.dbTransition.length-1].transition
+      state.counter=0
+        state.states = [
+            ["","",""],
+            ["","",""],
+            ["","",""],
+        ]
+    }
+
     const init = (num) => {
+      
+        state.dbTransition.forEach((d,index)=>{
+          if(d.id===num)state.currentTransition = state.dbTransition[index].transition
+        })
         state.counter=0
-        state.currentTransition = state.dbTransition[num].transition
         state.states = [
             ["","",""],
             ["","",""],
@@ -76,12 +100,26 @@ export default defineComponent({
         }
     }
 
+    const deleteAll = async()=>{
+        await axios.delete('/match/')
+        getData()
+    }
+
+    const deleteOne = async(num)=>{
+        await axios.delete(`/match/${num}`)
+        getData()
+    }
+
+
     return {
       state,
       getData,
       next,
       prev,
       init,
+      deleteOne,
+      deleteAll,
+      latest,
     };
   },
 
@@ -94,7 +132,15 @@ export default defineComponent({
 </script>
 
 <style>
-
+#list {
+  margin:10px;
+  
+  
+  text-align: center;
+  vertical-align: middle;
+  font-size:20px;
+  
+}
 
 
 </style>

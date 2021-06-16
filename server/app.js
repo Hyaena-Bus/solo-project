@@ -28,13 +28,13 @@ app.get("/match", async (request, response) => {
     
     const getData = await database.select().table('match')
     const newId = getData.length===0 ? 0 : getData[getData.length-1].id + 1
-
+    const date = new Date()
     await database.table('match').insert({
         "id": newId,
         "transition": `${request.body.body}`,
-        "date": new Date()
+        "date": date
     })
-
+    
     response.status(201).send()
  })
 

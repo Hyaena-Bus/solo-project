@@ -22,7 +22,7 @@
               <td @click="clicked(2,2)">{{state.states[2][2]}}</td>
           </tr>
         </table>
-        <button @click="newGame">newGame</button>
+        <button id="newGame" @click="newGame" >newGame</button>
     </div>
     <div v-else>
     <Log />
@@ -35,6 +35,7 @@
 import { defineComponent, reactive } from '@vue/composition-api'
 import axios from "axios";
 import Log from "./components/Log.vue"
+// import calc from "./αβ.js"
 
 export default defineComponent({
   components:{Log},
@@ -53,9 +54,10 @@ export default defineComponent({
     });
 
     const clicked = (row,column)=>{
+      // console.log(calc(state.transition))
       if(winChecker()) return
       if(state.states[row][column]){
-        console.log("そこには置けないよ")
+        state.text = "そこには置けないよ"
       }else{
         state.playerId ? state.states[row][column]="○" : state.states[row][column]="×"
         
@@ -151,6 +153,7 @@ export default defineComponent({
 }
 
 #table td {
+  margin:10px;
   border:1px solid #ccc;
   height: 85px;
   width: 85px;
@@ -159,6 +162,8 @@ export default defineComponent({
   font-size: 70px;
   cursor: pointer;
 }
+
+
 
 
 </style>
