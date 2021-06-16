@@ -1,24 +1,10 @@
-# solo-project
+このリポジトリはCode Chrysalisの生徒であるときに作成しました。
 
-## Project setup
-```
-npm install
-```
+https://solo-mvp-project.herokuapp.com/
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+○×ゲームとその対戦履歴の詳細を記録することが可能です。
 
-### Compiles and minifies for production
-```
-npm run build
-```
+cpuをonにすることで1Pでもプレイ可能です
 
-### Lints and fixes files
-```
-npm run lint
-```
+ちなみにCPUに勝つことはできないと思います
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
